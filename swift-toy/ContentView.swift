@@ -18,6 +18,7 @@ struct ContentView: View {
                 ForEach(items) { item in
                     NavigationLink {
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        Text("Your name is \(item.name)")
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
                     }
@@ -37,16 +38,28 @@ struct ContentView: View {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
                     }
+                   
                 }
             }
         } detail: {
             Text("Select an item")
+            Text("and make it a good one.")
         }
     }
+    
+   private func generateRandomName() -> String {
+        let names = ["Alice", "Bob", "Charlie", "Diana", "Ethan", "Fiona", "George", "Hannah", "Ian", "Julia", "Kevin", "Luna", "Michael", "Nora", "Oscar", "Paula", "Quinn", "Rachel", "Steve", "Tina", "Ulysses", "Vera", "William", "Xena", "Yvonne", "Zach"]
+        return names.randomElement() ?? "Name" // Fallback in case randomElement returns nil
+    }
+
+   private func generateRandomAge(min: Int, max: Int) -> Int {
+        return Int.random(in: min...max)
+    }
+
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Item(timestamp: Date(), name: generateRandomName(), age: generateRandomAge(min: 0, max: 90))
             modelContext.insert(newItem)
         }
     }
