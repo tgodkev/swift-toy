@@ -9,11 +9,11 @@ struct ContentView: View {
     var body: some View {
         VStack {
             // TextField to enter new task
-            TextField("Enter new task", text: $newTaskTitle, onCommit: addTask)
+            TextField("Enter new task", text: $newTaskTitle)
                 .textFieldStyle(.roundedBorder)
                 .padding()
-            Spacer()
             TextField("Enter a description", text: $newTaskContent).textFieldStyle(.roundedBorder).padding()
+            Button("Add Task", action: addTask)
 
             // List of tasks
             List {
@@ -44,6 +44,7 @@ struct ContentView: View {
         tasks.append(newTask)
         
         newTaskTitle = "" // Clear the input field
+        newTaskContent = ""
     }
     
     private func toggleTaskCompletion(_ task: Task) {
