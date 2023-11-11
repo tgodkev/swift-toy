@@ -63,7 +63,7 @@ struct ContentView: View {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].isCompleted.toggle()  // Toggle the completion status
             // Delay removal to allow animation to be seen
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // 0.5 seconds delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // 0.5 seconds delay
                 tasks.remove(at: index)
             }
         }
