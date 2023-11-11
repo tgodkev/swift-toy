@@ -4,6 +4,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var tasks = [Task]()  // Your tasks array
     @State private var newTaskTitle = "" // State variable to hold the current input
+    @State private var newTaskContent = "" // State var for the content
 
     var body: some View {
         VStack {
@@ -11,12 +12,17 @@ struct ContentView: View {
             TextField("Enter new task", text: $newTaskTitle, onCommit: addTask)
                 .textFieldStyle(.roundedBorder)
                 .padding()
+            Spacer()
+            TextField("Enter a description", text: $newTaskContent).textFieldStyle(.roundedBorder).padding()
 
             // List of tasks
             List {
                 ForEach(tasks) { task in
                     HStack {
-                        Text(task.title)
+                        VStack{
+                            Text(task.title)
+                            Text(task.copy)
+                        }
                         Spacer()
                         Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                             .foregroundColor(task.isCompleted ? .green : .gray)
@@ -33,7 +39,8 @@ struct ContentView: View {
     }
 
     private func addTask() {
-        let newTask = Task(title: newTaskTitle, isCompleted: false)
+        let newTask = Task(title: newTaskTitle, copy: newTaskContent, isCompleted: false )
+        
         tasks.append(newTask)
         
         newTaskTitle = "" // Clear the input field
