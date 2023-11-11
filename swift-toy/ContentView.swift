@@ -7,7 +7,7 @@ struct ContentView: View {
     @State private var newTaskContent = "" // State var for the content
 
     var body: some View {
-        VStack {
+        VStack{
             // TextField to enter new task
             TextField("Enter new task", text: $newTaskTitle)
                 .textFieldStyle(.roundedBorder)
@@ -29,18 +29,20 @@ struct ContentView: View {
             List {
                 ForEach(tasks) { task in
                     HStack {
-                        VStack{
-                            Text(task.title)
+                        VStack (alignment: .leading){
+                            Text(task.title).font(.title)
                             Text(task.copy)
                         }
                         Spacer()
                         Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                            .foregroundColor(task.isCompleted ? .green : .gray)
+                            .foregroundColor(task.isCompleted ? .green : .red)
+                            .animation(.easeInOut, value: task.isCompleted)
                             .onTapGesture {
                                 toggleTaskCompletion(task)
                             }
+
                         
-                    }
+                    }.transition(.opacity.animation(.easeInOut(duration: 1)))
                 }
                 .onDelete(perform: deleteTask)
             }
@@ -60,9 +62,13 @@ struct ContentView: View {
     private func toggleTaskCompletion(_ task: Task) {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index].isCompleted.toggle()  // Toggle the completion status
-            tasks.remove(at: index)
+            // Delay removal to allow animation to be seen
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // 0.5 seconds delay
+                tasks.remove(at: index)
+            }
         }
     }
+
     
     private func deleteTask(at offsets: IndexSet) {
         tasks.remove(atOffsets: offsets)
