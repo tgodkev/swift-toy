@@ -12,8 +12,18 @@ struct ContentView: View {
             TextField("Enter new task", text: $newTaskTitle)
                 .textFieldStyle(.roundedBorder)
                 .padding()
-            TextField("Enter a description", text: $newTaskContent).textFieldStyle(.roundedBorder).padding()
-            Button("Add Task", action: addTask)
+            if !newTaskTitle.isEmpty{
+                TextField("Enter a description", text: $newTaskContent).textFieldStyle(.roundedBorder).padding()
+            } else {
+                /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
+            }
+            VStack {
+                if !newTaskTitle.isEmpty{
+                    Button("Add Task", action: addTask)
+                } else {
+                    /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
+                }
+            }
 
             // List of tasks
             List {
@@ -59,3 +69,6 @@ struct ContentView: View {
     }
 }
  
+#Preview {
+    ContentView()
+}
